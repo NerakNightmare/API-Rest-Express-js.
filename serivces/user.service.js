@@ -25,3 +25,5 @@ class UserService{
     return { id };
   }
 }
+
+module.exports = UserService;

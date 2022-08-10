@@ -9,7 +9,7 @@ const createCategorySchema = Joi.object({
   image: image.required()
 });
 
-const updateCateorySchema = Joi.objetct({
+const updateCateorySchema = Joi.object({
   name: name,
   img: image
 });

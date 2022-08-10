@@ -1,34 +1,32 @@
 const express = require('express');
-const routerApi = require('./routes');
 const cors = require('cors');
+const routerApi = require('./routes');
 
+const { logErrors, errorHandler, boomErrorHandler } = require('./middleware/error.handler');
 
-const { logErrors, errorHandler, boomErrorHandler} = require ('./middleware/error.handler')
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(cors()); //acept any dom
 
-const whitelist = ['http//localhost:8080','http://myapp.com'];
-
-const options ={
+const whitelist = ['http://localhost:8080', 'https://myapp.co'];
+const options = {
   origin: (origin, callback) => {
-    if(whitelist.includes(origin) || !origin){
+    if (whitelist.includes(origin) || !origin) {
       callback(null, true);
-    }else{
-      callback(new Error('acces denied'));
+    } else {
+      callback(new Error('no permitido'));
     }
   }
 }
+app.use(cors(options));
 
 app.get('/', (req, res) => {
-  res.send('Hello, my server in Express');
+  res.send('Hola mi server en express');
 });
 
-
-app.get('/new-dir', (req, res) => {
-  res.send('Hello, im a new directory');
+app.get('/nueva-ruta', (req, res) => {
+  res.send('Hola, soy una nueva ruta');
 });
 
 routerApi(app);
@@ -38,11 +36,6 @@ app.use(boomErrorHandler);
 app.use(errorHandler);
 
 
-
-
-
-app.listen(port,() => {
-  console.log('My port ' + port);
+app.listen(port, () => {
+  console.log('Mi port' +  port);
 });
-
-
